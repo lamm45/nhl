@@ -1,0 +1,6 @@
+.dep
+.obj
+.vscode
+lib/libnhl.so
+src/nhl
+MakefileTarget*

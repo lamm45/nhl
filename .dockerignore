@@ -1,0 +1,9 @@
+**/.dep
+**/.dockerignore
+**/.git
+**/.gitignore
+**/.obj
+**/.vscode
+**/MakefileTarget*
+lib/libnhl.so
+src/nhl
