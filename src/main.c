@@ -150,6 +150,8 @@ int main(int argc, char **argv) {
         NhlSchedule *schedule;
         nhl_schedule_get(nhl, &date, level, &schedule); // TODO: Check return value
         display(schedule, &opts);
+        if (i < num_dates-1 && opts.style != STYLE_COMPACT)
+            printf("\n");
         nhl_schedule_unget(nhl, schedule); // TODO: This is inefficient if there are many dates
     }
 
