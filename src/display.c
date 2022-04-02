@@ -97,8 +97,8 @@ static void display_normal_header(const NhlGame *game, double utc_offset) {
     if (strcasecmp(status, "Preview") == 0) {
         if (strcasecmp(detail, "Scheduled") == 0 || strcasecmp(detail, "Pre-Game") == 0) {
             NhlTime local_time = utc_to_local(&game->start_time.time, utc_offset);
-            printf("%d:%02d %s\n", local_time.hours % 12, local_time.mins,
-                local_time.hours < 12 ? "AM" : "PM");
+            printf("%d:%02d %s\n", (local_time.hours % 12) > 0 ? (local_time.hours % 12) : 12,
+                local_time.mins, local_time.hours < 12 ? "AM" : "PM");
         } else if (strcasecmp(detail, "Postponed") == 0) {
             printf("PPD\n");
         } else {
