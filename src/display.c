@@ -433,6 +433,9 @@ int display_tekstitv(const NhlSchedule *schedule, const DisplayOptions *opts) {
 }
 
 int display(const NhlSchedule *schedule, const DisplayOptions *opts) {
+    if (schedule == NULL)
+        return 0;
+
     switch (opts->style) {
         case STYLE_DEFAULT:
             return display_normal(schedule, opts);
