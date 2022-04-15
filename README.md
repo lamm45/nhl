@@ -2,15 +2,15 @@
 This repository contains a C library and a command-line application for accessing and displaying scores from the [National Hockey League (NHL)](https://www.nhl.com/).
 
 The library automatically downloads data from the publicly available NHL Stats API and features a disk cache that aims to reduce the amount of data downloaded.
-The command-line tool can display scores for any given dates in a few different formats.
-In particular, the tool is capable of emulating [page 235](https://yle.fi/aihe/tekstitv?P=235) of the teletext service provided by the Finnish Broadcasting Company Yle.
+The command-line app can display scores for any given dates in a few different formats.
+In particular, the app is capable of emulating [page 235](https://yle.fi/aihe/tekstitv?P=235) of the teletext service (a.k.a. "Teksti-TV") provided by the Finnish Broadcasting Company Yle.
 
 The library, `libnhl`, is written in ANSI C and it has three dependencies:
 [cJSON](https://github.com/DaveGamble/cJSON), [CURL](https://curl.se) and [SQLite](https://www.sqlite.org).
 
-The command-line tool, `nhl`, is written in C99. In addition to `libnhl`, the tool depends on the [GNU C library](https://www.gnu.org/software/libc/).
+The command-line app, `nhl`, is written in C99. In addition to `libnhl`, the app depends on the [GNU C library](https://www.gnu.org/software/libc/).
 
-As of March 2022, neither the library nor the tool has reached version 0.0.1 yet.
+As of April 2022, neither the library nor the application has reached version 0.0.1 yet.
 Moreover, the library will not be considered stable even in the future, as it relies on the NHL Stats API which is undocumented.
 
 
@@ -19,14 +19,17 @@ In Ubuntu 20.04 or later, all required dependencies can be installed by:
 ```
 sudo apt install build-essential libcjson-dev libcurl4-openssl-dev libsqlite3-dev
 ```
-The library and the command-line tool can then be compiled simply by running
+The library and the command-line application can then be compiled simply by running
 ```
 make
 ```
 from the repository root folder.
 The shared object file `libnhl.so` and the executable `nhl` will be placed in their respective source directories `lib` and `src`.
-To execute the tool, simply run `src/nhl`.
-Run `src/nhl --help` to see all available command-line options.
+To execute the application, simply run
+```
+src/nhl
+```
+from the repository root folder. Run `src/nhl --help` to see all available command-line options.
 
 The easiest way to "install" `nhl` is to create a symbolic link to it and put the link in a folder which is in `$PATH`.
 For example, if `<repo>` is the repository root folder,
@@ -34,7 +37,17 @@ For example, if `<repo>` is the repository root folder,
 ln -s <repo>/src/nhl ~/bin/nhl
 ```
 should work, assuming that `~/bin` exists and is in `$PATH`.
-Now, you can run `nhl` from anywhere and the tool should start.
+Now, you can run `nhl` from anywhere and the program should start.
+
+# Screenshot
+
+![screenshot](/doc/screenshot_2022-04-03.png)
+
+The screenshot displays whatever font was used in the terminal.
+As a comparison, the original Teksti-TV looked like this on April 3, 2022:
+
+![Teksti-TV 235](/doc/tekstitv_2022-04-03.png)
+
 
 
 # Hello World
@@ -99,7 +112,7 @@ docker run -it nhltest
 Now, commands such as `nhl` and `nhl --help` should be available.
 
 
-# Related Projects
+# Other Relevant Projects
 https://gitlab.com/dword4/nhlapi : Unofficial documentation for the NHL Stats API.
 
 https://teksti-tv-235.firebaseapp.com : An online Teksti-TV emulator supporting advanced statistics and standings.
@@ -107,7 +120,7 @@ https://teksti-tv-235.firebaseapp.com : An online Teksti-TV emulator supporting 
 https://github.com/peruukki/nhl-recap + https://github.com/peruukki/nhl-score-api : An online app for showing animated NHL scores, together with its back-end.
 
 
-# Legal Information
+# Legal Notices
 The software in this repository is licensed under the MIT license.
 See `LICENSE` file for details.
 
