@@ -15,7 +15,7 @@
 
 /* Print specified number of whitespace characters. */
 static void print_blank(int spaces) {
-    while (spaces--)
+    while (spaces-- > 0)
         putc(' ', stdout);
 }
 
