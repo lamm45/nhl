@@ -89,6 +89,17 @@ static inline void print_team(const char *team, int mode) {
     }
 }
 
+/* Number of wins needed to win a playoff round. */
+static const int num_playoff_wins_needed = 4;
+
+/* Determine current round in playoffs. */
+static int playoff_round(const NhlGame *game) {
+    int away_completed = game->awayRecord->wins / num_playoff_wins_needed;
+    int home_completed = game->homeRecord->wins / num_playoff_wins_needed;
+    int min_completed = away_completed < home_completed ? away_completed : home_completed;
+    return min_completed + 1;
+}
+
 
 /* Print header for the default display mode. */
 static void display_normal_header(const NhlGame *game, double utc_offset) {
@@ -203,6 +214,11 @@ static void print_tekstitv_header(const NhlDate *date) {
     printf(" " BG_BLUE FG_BWHITE "  NHL-J\u00c4\u00c4KIEKKO          " BG_GREEN FG_BLUE "  %02d.%02d.      " COLOR_RESET "\n",
         date->day, date->month);
     // TODO: add year (if not current)
+}
+
+static void print_tekstitv_playoff_header(const NhlGame *game) {
+    int current_round = playoff_round(game);
+    printf("\n" FG_BGREEN " %d. KIERROS (%d voittoa)" COLOR_RESET "\n", current_round, num_playoff_wins_needed);
 }
 
 static void print_tekstitv_time(const NhlTime *utc_time, double utc_offset) {
@@ -414,9 +430,21 @@ static void print_tekstitv_goals(const NhlGame *game) {
     }
 }
 
+static void print_tekstitv_playoff_wins(const NhlGame *game) {
+    int rounds_completed = playoff_round(game) - 1;
+    int away_wins = game->awayRecord->wins - rounds_completed * num_playoff_wins_needed;
+    int home_wins = game->homeRecord->wins - rounds_completed * num_playoff_wins_needed;
+    printf("\n" FG_BYELLOW " Voitot %d-%d" COLOR_RESET "\n", home_wins, away_wins);
+}
+
 int display_tekstitv(const NhlSchedule *schedule, const DisplayOptions *opts) {
     int num_printed = 0;
     print_tekstitv_header(&schedule->date);
+
+    if (schedule->num_games > 0 && schedule->games[0]->type->postseason) {
+        print_tekstitv_playoff_header(schedule->games[0]);
+    }
+
     for (int i = 0; i != schedule->num_games; ++i) {
         NhlGame *game = schedule->games[i];
         int home_mode = team_disp_mode(game->home, opts);
@@ -427,6 +455,8 @@ int display_tekstitv(const NhlSchedule *schedule, const DisplayOptions *opts) {
         print_tekstitv_game_header(game, opts->utc_offset);
         print_tekstitv_game_teams(game, home_mode, away_mode, opts->utc_offset);
         print_tekstitv_goals(game);
+        if (game->type->postseason)
+            print_tekstitv_playoff_wins(game);
         ++num_printed;
     }
     return num_printed;
