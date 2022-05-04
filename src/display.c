@@ -122,7 +122,7 @@ static void display_normal_header(const NhlGame *game, double utc_offset) {
         if (game->details->shootout) {
             printf("Final / SO\n");
         } else if (game->details->current_period_number > 3) {
-            printf("Final / OT\n");
+            printf("Final / %s\n", game->details->current_period_name);
         } else {
             printf("Final\n");
         }
