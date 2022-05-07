@@ -146,11 +146,11 @@ static void display_normal_header(const NhlGame *game, double utc_offset) {
         if (away_wins == num_playoff_wins_needed)
             printf(" | %s wins %d-%d", game->away->abbreviation, away_wins, home_wins);
         else if (home_wins == num_playoff_wins_needed)
-            printf(" | %s wins %d-%d", game->home->abbreviation, away_wins, home_wins);
+            printf(" | %s wins %d-%d", game->home->abbreviation, home_wins, away_wins);
         else if (away_wins > home_wins)
             printf(" | %s leads %d-%d", game->away->abbreviation, away_wins, home_wins);
         else if (away_wins < home_wins)
-            printf(" | %s leads %d-%d", game->home->abbreviation, away_wins, home_wins);
+            printf(" | %s leads %d-%d", game->home->abbreviation, home_wins, away_wins);
         else
             printf(" | Tied %d-%d", away_wins, home_wins);
     }
