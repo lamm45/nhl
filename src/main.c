@@ -81,7 +81,7 @@ int main(int argc, char **argv) {
         for (int i = 0; i != uargs.num_days; ++i) {
             DateStatus status = date_from_str(uargs.days[i], &dates[i]);
             if (status != DATE_OK)
-                fprintf(stderr, "Unable to interpret \"%s\".\n", uargs.days[i]);
+                fprintf(stderr, "Unable to interpret day \"%s\".\n", uargs.days[i]);
             else if (uargs.verbose >= 2)
                 printf("Day \"%s\" interpreted as: %d-%02d-%02d\n",
                     uargs.days[i], dates[i].year, dates[i].month, dates[i].day);

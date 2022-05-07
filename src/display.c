@@ -13,6 +13,9 @@
 #include "colors.h"
 
 
+static const char *const months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
 /* Print specified number of whitespace characters. */
 static void print_blank(int spaces) {
     while (spaces-- > 0)
@@ -100,6 +103,14 @@ static int playoff_round(const NhlGame *game) {
     return min_completed + 1;
 }
 
+/* Determine wins for each team in the current playoff round. Returns rounds completed. */
+static int playoff_wins(const NhlGame *game, int *away_wins, int *home_wins) {
+    int rounds_completed = playoff_round(game) - 1;
+    *away_wins = game->away_record->wins - rounds_completed * num_playoff_wins_needed;
+    *home_wins = game->home_record->wins - rounds_completed * num_playoff_wins_needed;
+    return rounds_completed;
+}
+
 
 /* Print header for the default display mode. */
 static void display_normal_header(const NhlGame *game, double utc_offset) {
@@ -108,30 +119,47 @@ static void display_normal_header(const NhlGame *game, double utc_offset) {
     if (strcasecmp(status, "Preview") == 0) {
         if (strcasecmp(detail, "Scheduled") == 0 || strcasecmp(detail, "Pre-Game") == 0) {
             NhlTime local_time = utc_to_local(&game->start_time.time, utc_offset);
-            printf("%d:%02d %s\n", (local_time.hours % 12) > 0 ? (local_time.hours % 12) : 12,
+            printf("%d:%02d %s", (local_time.hours % 12) > 0 ? (local_time.hours % 12) : 12,
                 local_time.mins, local_time.hours < 12 ? "AM" : "PM");
         } else if (strcasecmp(detail, "Postponed") == 0) {
-            printf("PPD\n");
+            printf("PPD");
         } else {
-            printf("XX:XX\n");
+            printf("XX:XX");
         }
     } else if (strcasecmp(status, "Live") == 0) {
         NhlTime remaining = game->details->current_period_remaining;
-        printf("%d:%02d | %s\n", remaining.mins, remaining.secs, game->details->current_period_name);
+        printf("%d:%02d | %s", remaining.mins, remaining.secs, game->details->current_period_name);
     } else {
         if (game->details->shootout) {
-            printf("Final / SO\n");
+            printf("Final / SO");
         } else if (game->details->current_period_number > 3) {
-            printf("Final / %s\n", game->details->current_period_name);
+            printf("Final / %s", game->details->current_period_name);
         } else {
-            printf("Final\n");
+            printf("Final");
         }
     }
+
+    if (game->type->postseason) {
+        int away_wins;
+        int home_wins;
+        playoff_wins(game, &away_wins, &home_wins);
+        if (away_wins == num_playoff_wins_needed)
+            printf(" | %s wins %d-%d", game->away->abbreviation, away_wins, home_wins);
+        else if (home_wins == num_playoff_wins_needed)
+            printf(" | %s wins %d-%d", game->home->abbreviation, away_wins, home_wins);
+        else if (away_wins > home_wins)
+            printf(" | %s leads %d-%d", game->away->abbreviation, away_wins, home_wins);
+        else if (away_wins < home_wins)
+            printf(" | %s leads %d-%d", game->home->abbreviation, away_wins, home_wins);
+        else
+            printf(" | Tied %d-%d", away_wins, home_wins);
+    }
+
+    printf("\n");
 }
 
 int display_normal(const NhlSchedule *schedule, const DisplayOptions *opts) {
-    char *date_str = nhl_date_to_string(&schedule->date);
-    printf("NHL %s\n", date_str);
+    printf("NHL: %s %d, %d\n", months[schedule->date.month-1], schedule->date.day, schedule->date.year);
 
     int num_printed = 0;
     for (int i = 0; i != schedule->num_games; ++i) {
@@ -172,7 +200,6 @@ int display_normal(const NhlSchedule *schedule, const DisplayOptions *opts) {
         ++num_printed;
     }
 
-    free(date_str);
     return num_printed;
 }
 
@@ -431,9 +458,9 @@ static void print_tekstitv_goals(const NhlGame *game) {
 }
 
 static void print_tekstitv_playoff_wins(const NhlGame *game) {
-    int rounds_completed = playoff_round(game) - 1;
-    int away_wins = game->away_record->wins - rounds_completed * num_playoff_wins_needed;
-    int home_wins = game->home_record->wins - rounds_completed * num_playoff_wins_needed;
+    int away_wins;
+    int home_wins;
+    playoff_wins(game, &away_wins, &home_wins);
     printf("\n" FG_BYELLOW " Voitot %d-%d" COLOR_RESET "\n", home_wins, away_wins);
 }
 
