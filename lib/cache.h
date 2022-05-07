@@ -52,16 +52,16 @@ typedef struct NhlCacheGame {
 
     int awayTeam;         /* Away team (pseudo foreign key) */
     int awayScore;        /* Current score, i.e., number of goals */
-    int awayWins;         /* Prior wins in league records */
-    int awayLosses;       /* Prior losses in league records */
-    int awayOt;           /* Prior overtime losses in league records */
+    int awayWins;         /* Wins in league records */
+    int awayLosses;       /* Losses in league records */
+    int awayOt;           /* Overtime losses in league records */
     char *awayRecordType; /* Type of league records */
 
     int homeTeam;         /* Home team (pseudo foreign key) */
     int homeScore;        /* Current score, i.e., number of goals */
-    int homeWins;         /* Prior wins in league records */
-    int homeLosses;       /* Prior losses in league records */
-    int homeOt;           /* Prior overtime losses in league records */
+    int homeWins;         /* Wins in league records */
+    int homeLosses;       /* Losses in league records */
+    int homeOt;           /* Overtime losses in league records */
     char *homeRecordType; /* Type of league records */
 } NhlCacheGame;
 

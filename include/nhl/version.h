@@ -5,6 +5,7 @@
 extern "C" {
 #endif
 
+/* Library version. */
 typedef struct NhlVersion {
     unsigned major;
     unsigned minor;
@@ -12,8 +13,10 @@ typedef struct NhlVersion {
     const char *suffix;
 } NhlVersion;
 
+/* Return the library version. */
 const NhlVersion *nhl_version(void);
 
+/* Return the library version as a string. */
 const char *nhl_version_string(void);
 
 #ifdef __cplusplus

@@ -1240,13 +1240,13 @@ void nhl_cache_player_free(NhlCachePlayer *player) {
 /*** Positions ***/
 static const char position_table[] = "Positions";
 static const NhlCacheColumn position_columns[] = {
-    {"abbrev",   "TEXT"},
-    {"code",     "TEXT PRIMARY KEY"},
-    {"fullName", "TEXT"},
-    {"type",     "TEXT"},
-    {"_source",      "INTEGER"},
-    {"_timestamp",   "TEXT"},
-    {"_invalid",     "INTEGER"},
+    {"abbrev",     "TEXT"},
+    {"code",       "TEXT PRIMARY KEY"},
+    {"fullName",   "TEXT"},
+    {"type",       "TEXT"},
+    {"_source",    "INTEGER"},
+    {"_timestamp", "TEXT"},
+    {"_invalid",   "INTEGER"},
     {0}
 };
 

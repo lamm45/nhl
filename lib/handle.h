@@ -27,7 +27,11 @@ struct Nhl {
 
     CURL *curl;
     sqlite3 *db;
+
+    /* List of URLs that the handle has already accessed or tried to access. */
     NhlList *visited_urls;
+
+    /* If nonzero, nhl_prepare() is called without a matching call to nhl_finish(). */
     int in_progress;
 };
 

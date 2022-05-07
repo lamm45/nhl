@@ -199,8 +199,7 @@ typedef struct NhlGameDetails {
 } NhlGameDetails;
 
 
-/* Season record for one team prior to the game. */
-/* TODO: Check priorness. */
+/* Season record for one team. */
 typedef struct NhlTeamRecord {
     /* Total number of games played. */
     int games_played;
@@ -243,10 +242,10 @@ typedef struct NhlGame {
     /* Goal information in an array. */
     NhlGoal *goals;
 
-    /* Season record prior to the game for the away team. */
-    NhlTeamRecord *awayRecord;
-    /* Season record prior to the game for the home team. */
-    NhlTeamRecord *homeRecord;
+    /* Season record for the away team. */
+    NhlTeamRecord *away_record;
+    /* Season record for the home team. */
+    NhlTeamRecord *home_record;
 
     /* Additional details about the game and periods. */
     NhlGameDetails *details;

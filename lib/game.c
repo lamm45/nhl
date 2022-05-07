@@ -544,8 +544,8 @@ static void nhl_game_details_unget(Nhl *nhl, NhlGameDetails *details) {
 static NhlGame *create_game(const NhlCacheGame *cache_game) {
     NhlGame *game = malloc(sizeof(NhlGame));
 
-    NhlTeamRecord *awayRecord;
-    NhlTeamRecord *homeRecord;
+    NhlTeamRecord *away_record;
+    NhlTeamRecord *home_record;
 
     game->unique_id = cache_game->gamePk;
     game->away = NULL;
@@ -560,19 +560,19 @@ static NhlGame *create_game(const NhlCacheGame *cache_game) {
     game->num_goals = -1;
     game->goals = NULL;
 
-    awayRecord = malloc(sizeof(NhlTeamRecord));
-    awayRecord->wins = cache_game->awayWins;
-    awayRecord->losses = cache_game->awayLosses;
-    awayRecord->overtime_losses = cache_game->awayOt;
-    awayRecord->games_played = awayRecord->wins + awayRecord->losses + awayRecord->overtime_losses;
-    game->awayRecord = awayRecord;
+    away_record = malloc(sizeof(NhlTeamRecord));
+    away_record->wins = cache_game->awayWins;
+    away_record->losses = cache_game->awayLosses;
+    away_record->overtime_losses = cache_game->awayOt;
+    away_record->games_played = away_record->wins + away_record->losses + away_record->overtime_losses;
+    game->away_record = away_record;
 
-    homeRecord = malloc(sizeof(NhlTeamRecord));
-    homeRecord->wins = cache_game->homeWins;
-    homeRecord->losses = cache_game->homeLosses;
-    homeRecord->overtime_losses = cache_game->homeOt;
-    homeRecord->games_played = homeRecord->wins + homeRecord->losses + homeRecord->overtime_losses;
-    game->homeRecord = homeRecord;
+    home_record = malloc(sizeof(NhlTeamRecord));
+    home_record->wins = cache_game->homeWins;
+    home_record->losses = cache_game->homeLosses;
+    home_record->overtime_losses = cache_game->homeOt;
+    home_record->games_played = home_record->wins + home_record->losses + home_record->overtime_losses;
+    game->home_record = home_record;
 
     game->details = NULL;
     return game;
@@ -582,8 +582,8 @@ static NhlGame *create_game(const NhlCacheGame *cache_game) {
 static void delete_game(NhlGame *game) {
     if (game != NULL) {
         free(game->season);
-        free(game->awayRecord);
-        free(game->homeRecord);
+        free(game->away_record);
+        free(game->home_record);
         free(game);
     }
 }

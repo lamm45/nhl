@@ -5,8 +5,8 @@
 #include "cache.h"
 #include "dict.h"
 
-
-NhlStatus nhl_get_from_dict(Nhl *nhl, NhlDict *dict, int max_age, void *key, void **item, int *age) {
+/* Search for the `key` in `dict`. */
+static NhlStatus nhl_get_from_dict(Nhl *nhl, NhlDict *dict, int max_age, void *key, void **item, int *age) {
     char *timestamp;
     *item = nhl_dict_find(dict, key, &timestamp);
     if (*item != NULL) {
@@ -22,8 +22,8 @@ NhlStatus nhl_get_from_dict(Nhl *nhl, NhlDict *dict, int max_age, void *key, voi
     return NHL_CACHE_READ_NOT_FOUND;
 }
 
-
-NhlStatus nhl_get_from_cache(Nhl *nhl, int prev_age, int max_age,
+/* Try to read from cache using the callback function. */
+static NhlStatus nhl_get_from_cache(Nhl *nhl, int prev_age, int max_age,
                              NhlStatus (*get_from_cache_cb)(Nhl*, int, void**, void*), void *data_cb,
                              void **cache_item) {
 
@@ -57,14 +57,7 @@ NhlStatus nhl_get_from_cache(Nhl *nhl, int prev_age, int max_age,
     return status | NHL_CACHE_READ_NOT_FOUND;
 }
 
-/* Good from dict: NHL_CACHE_READ_OK, *item != NULL, cache_item == NULL
- * Good from db (possibly after download): NHL_CACHE_READ_OK, *item == NULL, cache_item != NULL
- * Expired from dict: NHL_CACHE_READ_EXPIRED, *item != NULL, cache_item NULL
- * Expired from db: NHL_CACHE_READ_EXPIRED, *item == NULL, cache_item != NULL
- * Otherwise: *item == NULL, cache_item NULL
- *
- * get_from_cache_cb: nhl, with-download-flag, cache_item[in/out], user_data (vaihda jarjestys?)
- */
+
 NhlStatus nhl_get(Nhl *nhl, NhlDict *dict, void *key, int max_age,
                   NhlStatus (*get_from_cache_cb)(Nhl *, int, void **, void *), void *data_cb,
                   void **item, void **cache_item) {

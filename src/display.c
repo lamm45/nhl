@@ -94,8 +94,8 @@ static const int num_playoff_wins_needed = 4;
 
 /* Determine current round in playoffs. */
 static int playoff_round(const NhlGame *game) {
-    int away_completed = game->awayRecord->wins / num_playoff_wins_needed;
-    int home_completed = game->homeRecord->wins / num_playoff_wins_needed;
+    int away_completed = game->away_record->wins / num_playoff_wins_needed;
+    int home_completed = game->home_record->wins / num_playoff_wins_needed;
     int min_completed = away_completed < home_completed ? away_completed : home_completed;
     return min_completed + 1;
 }
@@ -432,8 +432,8 @@ static void print_tekstitv_goals(const NhlGame *game) {
 
 static void print_tekstitv_playoff_wins(const NhlGame *game) {
     int rounds_completed = playoff_round(game) - 1;
-    int away_wins = game->awayRecord->wins - rounds_completed * num_playoff_wins_needed;
-    int home_wins = game->homeRecord->wins - rounds_completed * num_playoff_wins_needed;
+    int away_wins = game->away_record->wins - rounds_completed * num_playoff_wins_needed;
+    int home_wins = game->home_record->wins - rounds_completed * num_playoff_wins_needed;
     printf("\n" FG_BYELLOW " Voitot %d-%d" COLOR_RESET "\n", home_wins, away_wins);
 }
 
