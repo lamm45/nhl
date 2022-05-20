@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <nhl/version.h>
+
 #include "config.h"
 
 // Documentation for argp
@@ -114,8 +116,13 @@ static error_t parse(int key, char *arg, struct argp_state *state) {
     return 0;
 }
 
+void print_version(FILE *stream, struct argp_state *state) {
+    (void) state;
+    fprintf(stream, PROGRAM_NAME " " PROGRAM_VERSION " (libnhl %s)\n", nhl_version_string());
+}
+
 int parse_args(int argc, char **argv, UserArgs *uargs) {
-    argp_program_version = PROGRAM_NAME " " PROGRAM_VERSION;
+    argp_program_version_hook = print_version;
     argp_program_bug_address = "https://github.com/lamm45/nhl/issues ";
     static struct argp argp = { options, parse, argdoc, doc, 0, 0, 0 };
     return argp_parse(&argp, argc, argv, 0, NULL, uargs);

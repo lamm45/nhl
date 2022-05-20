@@ -2,7 +2,7 @@
 #define NHL_APP_CONFIG_H_
 
 #define PROGRAM_NAME "nhl"
-#define PROGRAM_VERSION "0.0.0"
+#define PROGRAM_VERSION "0.0.1"
 
 #define ENV_CACHEDIR "XDG_CACHE_HOME"
 #define ENV_HOMEDIR "HOME"

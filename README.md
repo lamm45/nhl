@@ -1,7 +1,7 @@
 # Introduction
 This repository contains a C library and a command-line application for accessing and displaying scores from the [National Hockey League (NHL)](https://www.nhl.com/).
 
-The library automatically downloads data from the publicly available NHL Stats API and features a disk cache that aims to reduce the amount of data downloaded.
+The library automatically downloads data from the publicly available (undocumented) NHL Stats API and features a disk cache that aims to reduce data transfer.
 The command-line app can display scores for any given dates in a few different formats.
 In particular, the app is capable of emulating [page 235](https://yle.fi/aihe/tekstitv?P=235) of the teletext service (a.k.a. "Teksti-TV") provided by the Finnish Broadcasting Company Yle.
 
@@ -9,9 +9,6 @@ The library, `libnhl`, is written in ANSI C and it has three dependencies:
 [cJSON](https://github.com/DaveGamble/cJSON), [CURL](https://curl.se) and [SQLite](https://www.sqlite.org).
 
 The command-line app, `nhl`, is written in C99. In addition to `libnhl`, the app depends on the [GNU C library](https://www.gnu.org/software/libc/).
-
-As of April 2022, neither the library nor the application has reached version 0.0.1 yet.
-Moreover, the library will not be considered stable even in the future, as it relies on the NHL Stats API which is undocumented.
 
 
 # Quick Start
@@ -31,7 +28,7 @@ src/nhl
 ```
 from the repository root folder. Run `src/nhl --help` to see all available command-line options.
 
-The easiest way to "install" `nhl` is to create a symbolic link to it and put the link in a folder which is in `$PATH`.
+The easiest way to "install" `nhl` is to create a symbolic link in a folder which is in `$PATH`.
 For example, if `<repo>` is the repository root folder,
 ```
 ln -s <repo>/src/nhl ~/bin/nhl
@@ -58,7 +55,7 @@ Error checking etc. are omitted for simplicity.
 #include <nhl/nhl.h>
 
 int main(int argc, char **argv) {
-    // Initialization (note: cache is disabled)
+    // Initialization (note: this will not enable cache)
     Nhl *nhl = nhl_init(NULL);
 
     // Data extraction
