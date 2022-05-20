@@ -373,8 +373,7 @@ static int print_tekstitv_goal(const NhlGoal *goal, char **assist1, char **assis
 }
 
 /* At least one input argument must be non-NULL. Arguments that are printed out are converted to
- * NULL. Returns one if both arguments are NULL after the execution, otherwise returns zero.
- * TODO: Single-line multi-assist.*/
+ * NULL. Returns one if both arguments are NULL after the execution, otherwise returns zero. */
 static int print_tekstitv_assist(char **assist1, char **assist2) {
     int completed = 0;
     int total_len = 0;
@@ -388,10 +387,16 @@ static int print_tekstitv_assist(char **assist1, char **assist2) {
         *assist1 = NULL;
         completed = 1;
     } else if (*assist1 != NULL && *assist2 != NULL) {
-        // First out of two assists
+        // First out of two assists, or both if possible
         printf("(%s,", *assist1);
         total_len += 2 + printlen(*assist1);
         *assist1 = NULL;
+        if (total_len + printlen(*assist2) < 16) {
+            printf("%s)", *assist2);
+            total_len += 1 + printlen(*assist2);
+            *assist2 = NULL;
+            completed = 1;
+        }
     } else if (*assist1 == NULL && *assist2 != NULL) {
         // Second out of two assists
         printf("%s)", *assist2);
